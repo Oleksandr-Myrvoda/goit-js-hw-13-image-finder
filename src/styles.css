@@ -8,6 +8,10 @@ html {
   box-sizing: inherit;
 }
 
+.isHidden {
+  display: none;
+}
+
 body {
   margin: 0;
   padding: 0;

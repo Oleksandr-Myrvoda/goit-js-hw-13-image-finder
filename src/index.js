@@ -7,6 +7,7 @@ const refs = {
   form: document.querySelector('.search'),
   gallery: document.querySelector('.gallery'),
   loadMore: document.querySelector('.loadMore'),
+  isHidden: document.querySelector('#isHidden'),
 };
 
 refs.form.addEventListener('submit', onSubmit);
@@ -26,7 +27,6 @@ function onSubmit(event) {
 
   page = 1;
   refs.gallery.innerHTML = '';
-
   loadGallery();
 }
 
@@ -36,7 +36,6 @@ function onLoadMore() {
 
   setTimeout(function () {
     let scrollTo = document.getElementById('loadMore').offsetTop;
-    console.log(scrollTo);
     window.scrollTo({
       top: scrollTo,
       left: 100,
@@ -51,6 +50,11 @@ function loadGallery() {
     .then(images => {
       imagesMarkup(images.hits);
       refs.loadMore.disabled = false;
+      if (images.hits.length >= 12) {
+        refs.isHidden.classList.remove('isHidden');
+      } else {
+        refs.isHidden.classList.add('isHidden');
+      }
     })
     .catch(console.log);
 }
