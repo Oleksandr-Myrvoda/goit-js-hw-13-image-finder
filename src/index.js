@@ -16,6 +16,7 @@ refs.loadMore.addEventListener('click', onLoadMore);
 
 let page = 1;
 let queryImage = '';
+// refs.form.input.value.textContent = '';
 
 function imagesMarkup(page) {
   refs.gallery.insertAdjacentHTML('beforeend', imgCardTpl(page));
@@ -27,29 +28,32 @@ function onSubmit(event) {
 
   page = 1;
   refs.gallery.innerHTML = '';
+
   loadGallery();
 }
 
 function onLoadMore() {
   page += 1;
-  loadGallery();
-
-  setTimeout(function () {
-    let scrollTo = document.getElementById('loadMore').offsetTop;
-    window.scrollTo({
-      top: scrollTo,
-      left: 100,
-      behavior: 'smooth',
-    });
-  }, 1000);
+  loadGallery(true);
 }
 
-function loadGallery() {
+function scroll() {
+  // let scrollTo = document.getElementById('loadMore').offsetTop;
+  const scrollTo = document.documentElement.scrollHeight;
+  window.scrollTo({
+    top: scrollTo,
+    left: 100,
+    behavior: 'smooth',
+  });
+}
+
+function loadGallery(shouldScroll) {
   refs.loadMore.disabled = true;
   fetchImages(queryImage, page)
     .then(images => {
       imagesMarkup(images.hits);
       refs.loadMore.disabled = false;
+      if (shouldScroll) scroll();
       if (images.hits.length >= 12) {
         refs.isHidden.classList.remove('isHidden');
       } else {
